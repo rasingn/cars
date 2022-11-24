@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.slim.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="container mx-auto px-20 ">
+        <h1 class="text-3xl font-bold underline text-red-400">
+            List
+        </h1>
+        <div class="flex flex-col bg-red-500 px-10 py-5">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <form action="/add">
+                    <input type="text" class="px-5 py-2 rounded rounded-20" name="brand">
+                    <button class="bg-gray-400 px-5 py-2 rounded rounded-20" id="addbt">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                    <div class="overflow-hidden">
+                        <table class="min-w-full">
+                            <thead class="border-b">
+                                <tr>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        id
+                                    </th>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        brand
+                                    </th>
+                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                        action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b" th:each="car : ${carsList}">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                                        th:text="${car.getId()}"> </td>
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                                        th:text="${car.getBrand()}"></td>
+                                        <td><a th:href="@{'/delete/'+${car.getId()}}" class="bg-red-400 px-2 py-1 rounded rounded-20">delete</a></td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#addbt").click(function () {
+            //alert( "Handler for .click() called." );
+        });
+    </script>
+</body>
+
+</html>
