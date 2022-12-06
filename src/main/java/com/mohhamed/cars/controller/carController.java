@@ -3,6 +3,7 @@ package com.mohhamed.cars.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,20 +17,22 @@ import com.mohhamed.cars.model.Car;
 @RequestMapping(value = "/")
 public class carController {
 
+
+    @Autowired
+    carDAL dal ;
+
     @RequestMapping(value = "/")
     public ModelAndView index() {
         // init modelAndView
         ModelAndView mv = new ModelAndView();
         mv.setViewName("index");
         // init DAl/object/data
-        carDAL dal = new carDAL();
         mv.addObject("carsList", dal.getAllCar());
         return mv;
     }
 
     @RequestMapping(value = "/{id}")
     public ModelAndView view(@PathVariable int id) {
-        carDAL dal = new carDAL();
         ModelAndView mv = new ModelAndView();
         mv.addObject("MyCar", dal.getCar(id));
         mv.setViewName("view");
@@ -38,19 +41,34 @@ public class carController {
 
     @RequestMapping(value = "/add")
     public String store(Car car) {
-
-        carDAL dal = new carDAL();
         dal.insert(car);
         return "redirect:/";
-
     }
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable int id) {
-        System.out.println(id);
-        carDAL dal = new carDAL();
         dal.delete(id);
-        return "redirect:/"; 
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/edit/{id}")
+    public ModelAndView edit(@PathVariable int id){
+        ModelAndView m =new ModelAndView();
+        Car car=dal.getCar(id);
+       if(car.getId()==0){
+        m.setViewName("index");
+        m.addObject("carsList", dal.getAllCar());
+       }else{
+           m.setViewName("edit");
+           m.addObject("car", car );
+       }
+    
+    return m;
+    }
+    @RequestMapping(value = "/update")
+    public String update(Car car){
+    dal.updateCar(car);
+    return "redirect:/";
     }
 
 }

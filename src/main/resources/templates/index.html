@@ -7,16 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.slim.js"></script>
-    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css">
-    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <title>Document</title>
 </head>
 
 <body ca>
 
     <div class="container mx-auto px-20 ">
-        <button
-            class="modal-open ">Open
+        <button class="modal-open ">Open
             Modal</button>
 
         <!--Modal-->
@@ -86,13 +87,16 @@
                         <table class="min-w-full">
                             <thead class="border-b">
                                 <tr>
-                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-center">
+                                    <th scope="col"
+                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-center">
                                         id
                                     </th>
-                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-center">
+                                    <th scope="col"
+                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-center">
                                         brand
                                     </th>
-                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-center">
+                                    <th scope="col"
+                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left text-center">
                                         action
                                     </th>
                                 </tr>
@@ -103,9 +107,15 @@
                                         th:text="${car.getId()}"> </td>
                                     <td class="text-center text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                                         th:text="${car.getBrand()}"></td>
-                                    <td class="text-center"><a th:href="@{'/delete/'+${car.getId()}}"
-                                            class=""><i class="las la-times text-red-500 text-center"></i></a></td>
-                                            
+                                    <td class="text-center">
+                                        <a th:href="@{'/delete/'+${car.getId()}}" class="">
+                                            <i class="las la-times text-red-500 text-center"></i>
+                                        </a>
+                                        <a th:href="@{'/edit/'+${car.getId()}}" class="">
+                                            <i class="las la-pen text-green-500 text-center hover:text-red-500"></i>
+                                        </a>
+                                    </td>
+
                                 </tr>
                             </tbody>
                         </table>

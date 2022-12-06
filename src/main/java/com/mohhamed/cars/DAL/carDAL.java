@@ -5,10 +5,15 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 import com.mohhamed.cars.config.MySqLConnector;
 import com.mohhamed.cars.model.Car;
 import com.mysql.cj.xdevapi.PreparableStatement;
 
+@Component
 public class carDAL {
 
           
@@ -74,6 +79,26 @@ public class carDAL {
             con.disconnect();
         }
     }
+
+    public void updateCar(Car car) {
+        MySqLConnector con = new MySqLConnector();
+        String q = "update car set name=? where id =?";
+        try {
+
+            PreparedStatement pre = con.connect().prepareStatement(q);
+            pre.setString(1, car.getBrand());
+            pre.setInt(2, car.getId());
+           pre.execute();
+           
+        } catch (Exception ex) {
+
+        } finally {
+            con.disconnect();
+        }
+    
+
+    }
+
 
     public void delete(int id){
         MySqLConnector con = new MySqLConnector();
