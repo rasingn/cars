@@ -2,6 +2,7 @@ package com.mohhamed.cars.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,8 +55,8 @@ public class carController {
     @RequestMapping(value = "/edit/{id}")
     public ModelAndView edit(@PathVariable int id){
         ModelAndView m =new ModelAndView();
-        Car car=dal.getCar(id);
-       if(car.getId()==0){
+        Optional<Car> car=dal.getCar(id);
+       if(!car.isPresent()){
         m.setViewName("index");
         m.addObject("carsList", dal.getAllCar());
        }else{
