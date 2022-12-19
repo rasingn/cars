@@ -5,71 +5,75 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mohhamed.cars.DAL.carDAL;
 import com.mohhamed.cars.model.Car;
 
-@Controller
+@RestController
 @RequestMapping(value = "/")
 public class carController {
 
-
     @Autowired
-    carDAL dal ;
+    carDAL dal;
 
-    @RequestMapping(value = "/")
-    public ModelAndView index() {
-        // init modelAndView
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("index");
-        // init DAl/object/data
-        mv.addObject("carsList", dal.getAllCar());
-        return mv;
+    @GetMapping(value = "/")
+    public List<Car> index() {
+
+        return dal.getAllCar();
+
     }
 
-    @RequestMapping(value = "/{id}")
-    public ModelAndView view(@PathVariable int id) {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("MyCar", dal.getCar(id));
-        mv.setViewName("view");
-        return mv;
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> view(@PathVariable int id) {
+        Optional<Car> car = dal.getCar(id);
+        if (car.isPresent())
+            return new ResponseEntity<Car>(car.get(), HttpStatus.OK);
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @RequestMapping(value = "/add")
-    public String store(Car car) {
+    @PostMapping(value = "/")
+    public Car store(@RequestBody Car car) {
         dal.insert(car);
-        return "redirect:/";
+
+        return car;
     }
 
-    @RequestMapping(value = "/delete/{id}")
-    public String delete(@PathVariable int id) {
-        dal.delete(id);
-        return "redirect:/";
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        if (dal.isExist(id)) {
+            dal.delete(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @RequestMapping(value = "/edit/{id}")
-    public ModelAndView edit(@PathVariable int id){
-        ModelAndView m =new ModelAndView();
-        Optional<Car> car=dal.getCar(id);
-       if(!car.isPresent()){
-        m.setViewName("index");
-        m.addObject("carsList", dal.getAllCar());
-       }else{
-           m.setViewName("edit");
-           m.addObject("car", car );
-       }
-    
-    return m;
-    }
-    @RequestMapping(value = "/update")
-    public String update(Car car){
-    dal.updateCar(car);
-    return "redirect:/";
+    @PatchMapping(value = "/")
+    public ResponseEntity<?> update(@RequestBody Car car) {
+        if (dal.isExist(car.getId())){
+            dal.updateCar(car);
+            return new ResponseEntity<Car>( dal.getCar(car.getId()).get(),HttpStatus.OK);
+         
+        }
+        else{
+           return ResponseEntity.notFound().build();
+        }
     }
 
 }

@@ -43,5 +43,9 @@ public class carDAL {
          repo.deleteById(id);
     }
 
+    public boolean isExist(int id){
+      return  repo.existsById(id);
+    }
+
 
 }
