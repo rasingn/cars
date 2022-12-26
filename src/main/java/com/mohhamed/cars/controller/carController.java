@@ -40,11 +40,8 @@ public class carController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> view(@PathVariable int id) {
         Optional<Car> car = dal.getCar(id);
-        if (car.isPresent())
-            return new ResponseEntity<Car>(car.get(), HttpStatus.OK);
-        else {
-            return ResponseEntity.notFound().build();
-        }
+        return   car.isPresent()? new ResponseEntity<Car>(car.get(), HttpStatus.OK):ResponseEntity.notFound().build();
+        
     }
 
     @PostMapping(value = "/")
